@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./backend
+    container_name: runote-backend
+    working_dir: /var/www/runote
+    volumes:
+      - ./backend:/var/www/runote
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: runote-frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host
+    depends_on:
+      - app
+
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: runote-nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+  #     - ./backend:/var/www/runote
+  #   depends_on:
+  #     - app
+  #     - frontend
+
+  db:
+    image: mysql:8.0
+    container_name: runote-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: runote
+      MYSQL_USER: runote_admin
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

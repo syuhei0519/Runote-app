@@ -1,0 +1,17 @@
+jenkins:
+  systemMessage: "Welcome to Local Jenkins for Runote"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: admin
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  remotingSecurity:
+    enabled: true
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true

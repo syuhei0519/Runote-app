@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: ./backend
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+    command: >
+      sh -c "php artisan config:clear &&
+             php artisan migrate &&
+             php artisan test"
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: runote_test
+      MYSQL_USER: runote_admin
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
