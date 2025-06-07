@@ -14,7 +14,10 @@ pipeline {
 
         stage('Fix Permissions') {
             steps {
-                sh 'sudo chown -R jenkins:jenkins /var/jenkins_home/workspace || true'
+                sh '''
+                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/storage
+                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/bootstrap/cache
+                '''
             }
         }
 
