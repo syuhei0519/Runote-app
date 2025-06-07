@@ -20,6 +20,12 @@ pipeline {
             }
         }
 
+        stage('Fix Permissions') {
+            steps {
+                sh 'chown -R $(id -u):$(id -g) backend/storage backend/bootstrap/cache || true'
+            }
+        }
+
         stage('Backend Test') {
             steps {
                 dir("${APP_DIR}/backend") {
