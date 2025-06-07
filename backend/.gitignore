@@ -17,3 +17,22 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Laravel
+/vendor
+/node_modules
+
+# Ignore all of storage and bootstrap/cache
+/storage/*
+!/storage/.gitignore  # 任意で最上位の .gitignore を残すなら
+
+# Ignore framework/cache etc
+/storage/app/*
+/storage/framework/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+/bootstrap/cache/*
