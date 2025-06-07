@@ -14,17 +14,13 @@ pipeline {
 
         stage('Fix Permissions Before Checkout') {
             steps {
+                // Jenkins workspace ディレクトリ全体に chmod を適用
                 sh '''
-                    # 該当ディレクトリが存在する場合のみ、パーミッション修正 → 削除
-                    if [ -d /var/jenkins_home/workspace/setup_runote/backend ]; then
-                      chmod -R u+w /var/jenkins_home/workspace/setup_runote/backend || true
-                      rm -rf /var/jenkins_home/workspace/setup_runote/backend/storage || true
-                      rm -rf /var/jenkins_home/workspace/setup_runote/backend/bootstrap/cache || true
-                    fi
+                    chmod -R u+w /var/jenkins_home/workspace || true
+                    rm -rf /var/jenkins_home/workspace/setup_runote || true
                 '''
             }
         }
-
 
         stage('Checkout') {
             steps {
@@ -36,15 +32,11 @@ pipeline {
 
         stage('Prepare Laravel Directories') {
             steps {
-                dir("${APP_DIR}/backend") {
-                    sh '''
-                        mkdir -p storage/app/public
-                        mkdir -p storage/framework/{cache,sessions,testing,views}
-                        mkdir -p storage/logs
-                        mkdir -p bootstrap/cache
-                        chmod -R 777 storage bootstrap/cache
-                    '''
-                }
+                sh '''
+                    mkdir -p backend/storage/framework/{cache,sessions,testing,views}
+                    mkdir -p backend/bootstrap/cache
+                    chmod -R 777 backend/storage backend/bootstrap/cache
+                '''
             }
         }
 
@@ -64,21 +56,6 @@ pipeline {
                     sh 'npm run build'
                 }
             }
-        }
-
-        // Optional: Docker Build
-        // stage('Docker Build') {
-        //     steps {
-        //         dir("${APP_DIR}") {
-        //             sh 'docker build -t runote:ci .'
-        //         }
-        //     }
-        // }
-    }
-
-    post {
-        always {
-            cleanWs()
         }
     }
 }
