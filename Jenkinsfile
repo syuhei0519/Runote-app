@@ -12,6 +12,15 @@ pipeline {
             }
         }
 
+        stage('Fix Permissions Before Checkout') {
+            steps {
+                sh '''
+                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/storage || true
+                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/bootstrap/cache || true
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
                 dir("${APP_DIR}") {
