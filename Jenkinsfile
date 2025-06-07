@@ -22,13 +22,16 @@ pipeline {
 
         stage('Clean Laravel Cache') {
             steps {
-                sh '''
-                    rm -rf backend/storage/*
-                    rm -rf backend/bootstrap/cache/*
-                    mkdir -p backend/storage/framework/{cache,sessions,testing,views}
-                    mkdir -p backend/bootstrap/cache
-                    chmod -R 777 backend/storage backend/bootstrap/cache
-                '''
+                dir("${APP_DIR}") {
+                    sh '''
+                        git clean -fdX backend/storage
+                        git clean -fdX backend/bootstrap/cache
+                        mkdir -p backend/storage/framework/{cache,sessions,testing,views}
+                        mkdir -p backend/storage/logs
+                        mkdir -p backend/bootstrap/cache
+                        chmod -R 777 backend/storage backend/bootstrap/cache
+                    '''
+                }
             }
         }
 
@@ -50,6 +53,7 @@ pipeline {
             }
         }
 
+        // Optional: Docker Build
         // stage('Docker Build') {
         //     steps {
         //         dir("${APP_DIR}") {
@@ -57,5 +61,11 @@ pipeline {
         //         }
         //     }
         // }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
     }
 }
