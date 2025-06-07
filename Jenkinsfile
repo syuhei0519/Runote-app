@@ -56,7 +56,7 @@ pipeline {
         dir("${BACKEND_DIR}") {
           sh '''
             echo "🧪 Running Laravel backend tests..."
-            docker compose exec -T app php artisan test
+            docker-compose exec backend php artisan test
           '''
         }
       }
