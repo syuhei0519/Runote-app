@@ -12,15 +12,6 @@ pipeline {
             }
         }
 
-        stage('Fix Permissions') {
-            steps {
-                sh '''
-                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/storage
-                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/bootstrap/cache
-                '''
-            }
-        }
-
         stage('Checkout') {
             steps {
                 dir("${APP_DIR}") {
@@ -29,16 +20,15 @@ pipeline {
             }
         }
 
-        stage('Clean Laravel Cache') {
+        stage('Prepare Laravel Directories') {
             steps {
-                dir("${APP_DIR}") {
+                dir("${APP_DIR}/backend") {
                     sh '''
-                        git clean -fdX backend/storage
-                        git clean -fdX backend/bootstrap/cache
-                        mkdir -p backend/storage/framework/{cache,sessions,testing,views}
-                        mkdir -p backend/storage/logs
-                        mkdir -p backend/bootstrap/cache
-                        chmod -R 777 backend/storage backend/bootstrap/cache
+                        mkdir -p storage/app/public
+                        mkdir -p storage/framework/{cache,sessions,testing,views}
+                        mkdir -p storage/logs
+                        mkdir -p bootstrap/cache
+                        chmod -R 777 storage bootstrap/cache
                     '''
                 }
             }
