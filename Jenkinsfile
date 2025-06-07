@@ -14,10 +14,10 @@ pipeline {
 
         stage('Fix Permissions Before Checkout') {
             steps {
-                // Jenkins workspace ディレクトリ全体に chmod を適用
                 sh '''
-                    chmod -R u+w /var/jenkins_home/workspace || true
-                    rm -rf /var/jenkins_home/workspace/setup_runote || true
+                    echo "🔧 Fixing permissions in Jenkins workspace..."
+                    find /var/jenkins_home/workspace -type f ! -writable -exec chmod u+w {} + || true
+                    find /var/jenkins_home/workspace -type d ! -writable -exec chmod u+w {} + || true
                 '''
             }
         }
