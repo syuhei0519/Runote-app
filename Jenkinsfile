@@ -15,11 +15,16 @@ pipeline {
         stage('Fix Permissions Before Checkout') {
             steps {
                 sh '''
-                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/storage || true
-                    rm -rf /var/jenkins_home/workspace/setup_runote/backend/bootstrap/cache || true
+                    # 該当ディレクトリが存在する場合のみ、パーミッション修正 → 削除
+                    if [ -d /var/jenkins_home/workspace/setup_runote/backend ]; then
+                      chmod -R u+w /var/jenkins_home/workspace/setup_runote/backend || true
+                      rm -rf /var/jenkins_home/workspace/setup_runote/backend/storage || true
+                      rm -rf /var/jenkins_home/workspace/setup_runote/backend/bootstrap/cache || true
+                    fi
                 '''
             }
         }
+
 
         stage('Checkout') {
             steps {
