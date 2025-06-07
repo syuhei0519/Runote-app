@@ -20,9 +20,15 @@ pipeline {
             }
         }
 
-        stage('Fix Permissions') {
+        stage('Clean Laravel Cache') {
             steps {
-                sh 'chown -R $(id -u):$(id -g) backend/storage backend/bootstrap/cache || true'
+                sh '''
+                    rm -rf backend/storage/*
+                    rm -rf backend/bootstrap/cache/*
+                    mkdir -p backend/storage/framework/{cache,sessions,testing,views}
+                    mkdir -p backend/bootstrap/cache
+                    chmod -R 777 backend/storage backend/bootstrap/cache
+                '''
             }
         }
 
