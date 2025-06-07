@@ -12,6 +12,12 @@ pipeline {
             }
         }
 
+        stage('Fix Permissions') {
+            steps {
+                sh 'sudo chown -R jenkins:jenkins /var/jenkins_home/workspace || true'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 dir("${APP_DIR}") {
