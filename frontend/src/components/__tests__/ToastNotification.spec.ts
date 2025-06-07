@@ -3,14 +3,7 @@ import { mount } from '@vue/test-utils'
 import ToastNotification from '../ToastNotification.vue'
 
 describe('ToastNotification', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-  })
-
-  afterEach(() => {
-    vi.restoreAllTimers()
-  })
-
+  
   it('成功タイプで正しく表示される', () => {
     const wrapper = mount(ToastNotification, {
       props: {

@@ -5,7 +5,10 @@
     @click.self="onCancel"
   >
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">
-     <!-- メッセージ -->
+      <!-- タイトル -->
+      <h3 class="text-lg font-semibold mb-4">{{ title }}</h3>
+
+      <!-- メッセージ -->
       <div class="mb-6">
         <p class="text-sm text-gray-500">{{ message }}</p>
         <p v-if="description" class="text-xs text-gray-400 mt-2">{{ description }}</p>
